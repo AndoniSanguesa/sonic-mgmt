@@ -35,7 +35,7 @@ USER {{ USERNAME }}
 
 ADD --chown={{ USERNAME }} id_rsa /home/{{ USERNAME }}/.ssh/id_rsa
 
-ENV HOME=/datadrive/{{ USERNAME }}
+ENV HOME=/home/{{ USERNAME }}
 ENV USER {{ USERNAME }}
 WORKDIR /datadrive/asanguesa/
 
