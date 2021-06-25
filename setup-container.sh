@@ -3,9 +3,9 @@
 function setup_local_image() {
     tmpdir=`mktemp -d`
 
-    AKEY_FILE=$HOME/.ssh/authorized_keys
-    PRIVKEY_FILE=$HOME/.ssh/id_rsa_docker_sonic_mgmt
-    PUBKEY_FILE=$HOME/.ssh/id_rsa_docker_sonic_mgmt.pub
+    AKEY_FILE=/datadrive/asanguesa/.ssh/authorized_keys
+    PRIVKEY_FILE=/datadrive/asanguesa/.ssh/id_rsa_docker_sonic_mgmt
+    PUBKEY_FILE=/datadrive/asanguesa/.ssh/id_rsa_docker_sonic_mgmt.pub
 
     [ -f $PRIVKEY_FILE ] || ssh-keygen -t rsa -q -N "" -f $PRIVKEY_FILE
 
@@ -25,7 +25,7 @@ FROM {{ IMAGE_ID }}
 
 RUN if sudo grep -q g{{ GROUPNAME }} /etc/group; then sudo groupmod g{{ GROUPNAME }} -n {{ GROUPNAME }};fi
 RUN sudo grep -q {{ GROUPNAME }} /etc/group || sudo groupadd -g {{ GROUPID }} {{ GROUPNAME }}
-RUN if sudo grep -q {{ USERNAME }} /etc/passwd; then sudo usermod {{ USERNAME }} -m -d /home/{{ USERNAME }};else sudo useradd --shell /bin/bash -u {{ USERID }} -g {{ GROUPID }} -d /home/{{ USERNAME }} {{ USERNAME }};fi
+RUN if sudo grep -q {{ USERNAME }} /etc/passwd; then sudo usermod {{ USERNAME }} -m -d /datadrive/{{ USERNAME }};else sudo useradd --shell /bin/bash -u {{ USERID }} -g {{ GROUPID }} -d /datadrive/{{ USERNAME }} {{ USERNAME }};fi
 
 RUN sudo sed -i "$ a {{ USERNAME }} ALL=(ALL) NOPASSWD:ALL" /etc/sudoers
 
@@ -33,11 +33,11 @@ RUN sudo usermod -aG sudo {{ USERNAME }}
 
 USER {{ USERNAME }}
 
-ADD --chown={{ USERNAME }} id_rsa /home/{{ USERNAME }}/.ssh/id_rsa
+ADD --chown={{ USERNAME }} id_rsa /datadrive/{{ USERNAME }}/.ssh/id_rsa
 
-ENV HOME=/home/{{ USERNAME }}
+ENV HOME=/datadrive/{{ USERNAME }}
 ENV USER {{ USERNAME }}
-WORKDIR $HOME
+WORKDIR /datadrive/asanguesa/
 
 EOF
 
