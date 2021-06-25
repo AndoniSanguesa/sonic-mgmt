@@ -59,7 +59,7 @@ sudo systemctl restart mux-simulator
 ```
 
 ## Shared by multiple test setups
-The mux-simulator service is shared by multiple dualtor test setups using the same test server. Any dualtor test setups using it is recorded in a persistent file on test server `{{ root_path }}/mux_simulator.setups.txt`. During `testbed-cli.sh add-topo`, the vm set name of current setup will be added into it. During `testbed-cli.sh remove-topo`, the vm set name of current setup will be removed from it. When the file is empty, the mux-simulator service will be stopped.
+The mux-simulator service is shared by multiple dualtor test setups using the same test server. Any dualtor test setups using it is recorded in a persistent file on test server `/datadrive/asanguesa/{{ root_path }}/mux_simulator.setups.txt`. During `testbed-cli.sh add-topo`, the vm set name of current setup will be added into it. During `testbed-cli.sh remove-topo`, the vm set name of current setup will be removed from it. When the file is empty, the mux-simulator service will be stopped.
 
 
 ## How to troubleshoot mux simulator

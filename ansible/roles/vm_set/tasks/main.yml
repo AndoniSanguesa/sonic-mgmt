@@ -220,18 +220,18 @@
   when: vm_type not in supported_vm_types
 
 - block:
-    - name: Ensure {{ root_path }} exists
-      file: path={{ root_path }} state=directory
+    - name: Ensure /datadrive/asanguesa/{{ root_path }} exists
+      file: path=/datadrive/asanguesa/{{ root_path }} state=directory
 
     - name: Install cleanup script
       template: src=cleanup.sh.j2
-                dest={{ root_path }}/cleanup.sh
+                dest=/datadrive/asanguesa/{{ root_path }}/cleanup.sh
 
-    - name: Copy vm_resumer.py to the {{ root_path }}
+    - name: Copy vm_resumer.py to the /datadrive/asanguesa/{{ root_path }}
       become: true
       copy:
         src: roles/vm_set/files/vm_resumer.py
-        dest: "{{ root_path }}"
+        dest: "/datadrive/asanguesa/{{ root_path }}"
         mode: 0755
 
     - name: Find current server group

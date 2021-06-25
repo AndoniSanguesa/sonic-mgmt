@@ -1,6 +1,6 @@
 
-- name: Get absolute path of {{ root_path }}
-  command: "realpath {{ root_path }}"
+- name: Get absolute path of /datadrive/asanguesa/{{ root_path }}
+  command: "realpath /datadrive/asanguesa/{{ root_path }}"
   register: real_root_path
 
 - name: Set variable abs_root_path
