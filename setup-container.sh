@@ -3,9 +3,9 @@
 function setup_local_image() {
     tmpdir=`mktemp -d`
 
-    AKEY_FILE=/datadrive/asanguesa/.ssh/authorized_keys
-    PRIVKEY_FILE=/datadrive/asanguesa/.ssh/id_rsa_docker_sonic_mgmt
-    PUBKEY_FILE=/datadrive/asanguesa/.ssh/id_rsa_docker_sonic_mgmt.pub
+    AKEY_FILE=$HOME/.ssh/authorized_keys
+    PRIVKEY_FILE=$HOME/.ssh/id_rsa_docker_sonic_mgmt
+    PUBKEY_FILE=$HOME/.ssh/id_rsa_docker_sonic_mgmt.pub
 
     [ -f $PRIVKEY_FILE ] || ssh-keygen -t rsa -q -N "" -f $PRIVKEY_FILE
 
@@ -33,7 +33,7 @@ RUN sudo usermod -aG sudo {{ USERNAME }}
 
 USER {{ USERNAME }}
 
-ADD --chown={{ USERNAME }} id_rsa /datadrive/{{ USERNAME }}/.ssh/id_rsa
+ADD --chown={{ USERNAME }} id_rsa /home/{{ USERNAME }}/.ssh/id_rsa
 
 ENV HOME=/datadrive/{{ USERNAME }}
 ENV USER {{ USERNAME }}
