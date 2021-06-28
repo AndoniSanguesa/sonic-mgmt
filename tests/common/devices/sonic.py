@@ -64,11 +64,7 @@ class SonicHost(AnsibleHostBase):
                 'ansible_ssh_user': ssh_user,
                 'ansible_ssh_pass': ssh_passwd,
             }
-<<<<<<< HEAD
-            self.host.options['variable_manager'].extra_vars.update(evars) 
-=======
             self.host.options['variable_manager'].extra_vars.update(evars)
->>>>>>> ca982e61111e008027c9e668466a6189df7f7da3
 
         self._facts = self._gather_facts()
         self._os_version = self._get_os_version()

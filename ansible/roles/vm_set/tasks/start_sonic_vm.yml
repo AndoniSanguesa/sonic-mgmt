@@ -1,5 +1,5 @@
 - set_fact:
-    sonic_vm_storage_location: "{{ home_path }}/sonic-vm"
+    sonic_vm_storage_location: "/home/asanguesa/sonic-vm"
     when: sonic_vm_storage_location is not defined
 
 - name: Create directory for vm images and vm disks

@@ -109,7 +109,6 @@ def test_neighbors_health(duthosts, localhost, nbrhosts, eos, sonic, enum_fronte
             failmsg = check_eos_bgp_facts(k, nbrhost)
             if failmsg:
                 fails.append(failmsg)
-<<<<<<< HEAD
 
         elif isinstance(nbrhost, SonicHost):
             failmsg = check_snmp(k, v['mgmt_addr'], localhost, sonic['snmp_rocommunity'], False)
@@ -124,22 +123,6 @@ def test_neighbors_health(duthosts, localhost, nbrhosts, eos, sonic, enum_fronte
             if failmsg:
                 fails.append(failmsg)
 
-=======
-
-        elif isinstance(nbrhost, SonicHost):
-            failmsg = check_snmp(k, v['mgmt_addr'], localhost, sonic['snmp_rocommunity'], False)
-            if failmsg:
-                fails.append(failmsg)
-
-            failmsg = check_sonic_facts(k, v['mgmt_addr'], nbrhost)
-            if failmsg:
-                fails.append(failmsg)
-
-            failmsg = check_sonic_bgp_facts(k, nbrhost)
-            if failmsg:
-                fails.append(failmsg)
-
->>>>>>> ca982e61111e008027c9e668466a6189df7f7da3
         else:
             failmsg = "neighbor type {} is unknown".format(k)
             fails.append(failmsg)

@@ -10,7 +10,7 @@
   include_tasks: stop_vm.yml
   vars:
     vm_name: "{{ item }}"
-    disk_image_dir: "/datadrive/asanguesa/{{ root_path }}/disks"
+    disk_image_dir: "/home/asanguesa/{{ root_path }}/disks"
   with_items: "{{ VM_hosts }}"
 
 - name: Destroy VMs network
