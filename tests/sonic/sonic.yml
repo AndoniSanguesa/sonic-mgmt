@@ -1,2 +1,6 @@
 # snmp variables
+<<<<<<< HEAD
 snmp_rocommunity: public
+=======
+snmp_rocommunity: public
+>>>>>>> ca982e61111e008027c9e668466a6189df7f7da3

@@ -362,6 +362,7 @@ def nbrhosts(ansible_adhoc, tbinfo, creds, request):
 
     vm_base = int(tbinfo['vm_base'][2:])
     neighbor_type = request.config.getoption("--neighbor_type")
+<<<<<<< HEAD
     if neighbor_type == "eos":
         devices[k] = {'host': EosHost(ansible_adhoc,
                                     "VM%04d" % (vm_base + v['vm_offset']),
@@ -378,6 +379,26 @@ def nbrhosts(ansible_adhoc, tbinfo, creds, request):
                     'conf': tbinfo['topo']['properties']['configuration'][k]}
     else:
         raise ValueError("Unknown neighbor type %s" % (neighbor_type, ))
+=======
+    devices = {}
+    for k, v in tbinfo['topo']['properties']['topology']['VMs'].items():
+        if neighbor_type == "eos":
+            devices[k] = {'host': EosHost(ansible_adhoc,
+                                        "VM%04d" % (vm_base + v['vm_offset']),
+                                        creds['eos_login'],
+                                        creds['eos_password'],
+                                        shell_user=creds['eos_root_user'] if 'eos_root_user' in creds else None,
+                                        shell_passwd=creds['eos_root_password'] if 'eos_root_password' in creds else None),
+                        'conf': tbinfo['topo']['properties']['configuration'][k]}
+        elif neighbor_type == "sonic":
+            devices[k] = {'host': SonicHost(ansible_adhoc,
+                                        "VM%04d" % (vm_base + v['vm_offset']),
+                                        ssh_user=creds['sonic_login'] if 'sonic_login' in creds else None,
+                                        ssh_passwd=creds['sonic_password'] if 'sonic_password' in creds else None),
+                        'conf': tbinfo['topo']['properties']['configuration'][k]}
+        else:
+            raise ValueError("Unknown neighbor type %s" % (neighbor_type, ))
+>>>>>>> ca982e61111e008027c9e668466a6189df7f7da3
     return devices
 
 @pytest.fixture(scope="module")
