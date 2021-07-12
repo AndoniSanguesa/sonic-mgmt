@@ -51,7 +51,7 @@ def test_http_copy(duthosts, rand_one_dut_hostname, localhost):
         orig_checksum = hashlib.md5(file.read()).hexdigest()
 
     # Have DUT request file from http server
-    duthost.command("curl -O {}:{}/{}".format(CONTAINER_IP, HTTP_PORT, test_img_file_name))
+    duthost.command("curl -O {}:{}/http/{}".format(CONTAINER_IP, HTTP_PORT, test_img_file_name))
 
     # Validate file was received
     res = duthost.command("ls -ltr /home/admin/{}".format(test_img_file_name))["rc"]
