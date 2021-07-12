@@ -40,10 +40,14 @@ def test_http_copy(duthosts, rand_one_dut_hostname, localhost):
         pytest.fail("HTTP Server could not be started")
 
     # Download file via http into current dir
-    os.system("sudo wget {} -O {}".format(test_img, test_img_file_name))
+    os.system("sudo wget {} -O ./http/{}".format(test_img, test_img_file_name))
+
+    # Ensure that file was downloaded
+    if os.path.isfile("./http/{}".format(test_img_file_name)):
+        pytest.fail("file could not be downloaded to host machine")
 
     # Generate MD5 checksum to compare with the sent file
-    with open("{}".format(test_img_file_name)) as file:
+    with open("./http/{}".format(test_img_file_name)) as file:
         orig_checksum = hashlib.md5(file.read()).hexdigest()
 
     # Have DUT request file from http server
@@ -56,7 +60,7 @@ def test_http_copy(duthosts, rand_one_dut_hostname, localhost):
         pytest.fail("Test file was not found on DUT after attempted scp copy")
 
     # Get MD5 checksum of received file
-    output = duthost.command("md5sum ./{}".format(test_img_file_name))["stdout"]
+    output = duthost.command("md5sum ~/{}".format(test_img_file_name))["stdout"]
     new_checksum = output.split()[0]
 
     # Confirm that the received file is identical to the original file
@@ -64,7 +68,7 @@ def test_http_copy(duthosts, rand_one_dut_hostname, localhost):
         pytest.fail("Original file differs from file ssh'ed to the DUT and back.")
 
     # Perform cleanup on DUT
-    duthost.command("sudo rm !/{}".format(test_img_file_name))
+    duthost.command("sudo rm ~/{}".format(test_img_file_name))
 
     # Confirm cleanup occured succesfuly
     res = duthost.command("ls -ltr ~/{}".format(test_img_file_name))["rc"]
@@ -72,10 +76,10 @@ def test_http_copy(duthosts, rand_one_dut_hostname, localhost):
         pytest.fail("DUT could not be cleaned.")
 
     # Delete file off host
-    os.system("sudo rm {}".format(test_img_file_name))
+    os.system("sudo rm ./http/{}".format(test_img_file_name))
 
     # Ensure that file was removed correctly
-    if os.path.isfile("{}".format(test_img_file_name)):
+    if os.path.isfile("./http/{}".format(test_img_file_name)):
         pytest.fail("Host machine could not be cleaned")
 
     # Stop HTTP server
