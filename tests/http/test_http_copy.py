@@ -25,7 +25,7 @@ def test_http_copy(duthosts, rand_one_dut_hostname, localhost):
     test_img_file_name = "sonic-vs.img.gz"
 
     # Start HTTP Server
-    pid = subprocess.Popen([sys.executable, "start_http_server.py"])
+    pid = subprocess.Popen([sys.executable, "./http/start_http_server.py"])
 
     # Validate HTTP Server has started
     started = False
