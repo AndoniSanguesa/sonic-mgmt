@@ -54,13 +54,13 @@ def test_http_copy(duthosts, rand_one_dut_hostname, localhost):
     duthost.command("curl -O {}:{}/{}".format(CONTAINER_IP, HTTP_PORT, test_img_file_name))
 
     # Validate file was received
-    res = duthost.command("ls -ltr ~/{}".format(test_img_file_name))["rc"]
+    res = duthost.command("ls -ltr /home/admin/{}".format(test_img_file_name))["rc"]
 
     if res != 0:
         pytest.fail("Test file was not found on DUT after attempted scp copy")
 
     # Get MD5 checksum of received file
-    output = duthost.command("md5sum ~/{}".format(test_img_file_name))["stdout"]
+    output = duthost.command("md5sum /home/admin/{}".format(test_img_file_name))["stdout"]
     new_checksum = output.split()[0]
 
     # Confirm that the received file is identical to the original file
@@ -68,10 +68,10 @@ def test_http_copy(duthosts, rand_one_dut_hostname, localhost):
         pytest.fail("Original file differs from file ssh'ed to the DUT and back.")
 
     # Perform cleanup on DUT
-    duthost.command("sudo rm ~/{}".format(test_img_file_name))
+    duthost.command("sudo rm /home/admin/{}".format(test_img_file_name))
 
     # Confirm cleanup occured succesfuly
-    res = duthost.command("ls -ltr ~/{}".format(test_img_file_name))["rc"]
+    res = duthost.command("ls -ltr /home/admin/{}".format(test_img_file_name))["rc"]
     if res == 0:
         pytest.fail("DUT could not be cleaned.")
 
