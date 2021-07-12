@@ -54,7 +54,7 @@ def test_http_copy(duthosts, rand_one_dut_hostname, localhost):
     duthost.command("curl -O {}:{}/http/{}".format(CONTAINER_IP, HTTP_PORT, test_img_file_name))
 
     # Validate file was received
-    res = duthost.command("ls -ltr /home/admin/{}".format(test_img_file_name))["rc"]
+    res = duthost.command("ls -ltr /home/admin/{}".format(test_img_file_name), module_ignore_errors=True)["rc"]
 
     if res != 0:
         pytest.fail("Test file was not found on DUT after attempted scp copy")
@@ -71,7 +71,7 @@ def test_http_copy(duthosts, rand_one_dut_hostname, localhost):
     duthost.command("sudo rm /home/admin/{}".format(test_img_file_name))
 
     # Confirm cleanup occured succesfuly
-    res = duthost.command("ls -ltr /home/admin/{}".format(test_img_file_name))["rc"]
+    res = duthost.command("ls -ltr /home/admin/{}".format(test_img_file_name), module_ignore_errors=True)["rc"]
     if res == 0:
         pytest.fail("DUT could not be cleaned.")
 
