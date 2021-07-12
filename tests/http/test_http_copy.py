@@ -57,7 +57,7 @@ def test_http_copy(duthosts, rand_one_dut_hostname, localhost):
     res = duthost.command("ls -ltr ./{}".format(test_img_file_name), module_ignore_errors=True)["rc"]
 
     if res != 0:
-        pytest.fail("Test file was not found on DUT after attempted scp copy")
+        pytest.fail("Test file was not found on DUT after attempted http get")
 
     # Get MD5 checksum of received file
     output = duthost.command("md5sum ./{}".format(test_img_file_name))["stdout"]
@@ -65,7 +65,7 @@ def test_http_copy(duthosts, rand_one_dut_hostname, localhost):
 
     # Confirm that the received file is identical to the original file
     if orig_checksum != new_checksum:
-        pytest.fail("Original file differs from file ssh'ed to the DUT and back.")
+        pytest.fail("Original file differs from file sent to the DUT")
 
     # Perform cleanup on DUT
     duthost.command("sudo rm ./{}".format(test_img_file_name))
