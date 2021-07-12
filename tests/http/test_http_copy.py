@@ -40,18 +40,18 @@ def test_http_copy(duthosts, rand_one_dut_hostname, localhost):
         pytest.fail("HTTP Server could not be started")
 
     # Download file via http into current dir
-    os.system("sudo wget {} -O ~/{}".format(test_img, test_img_file_name))
+    os.system("sudo wget {} -O ./http/{}".format(test_img, test_img_file_name))
 
     # Ensure that file was downloaded
-    if not os.path.isfile("~/{}".format(test_img_file_name)):
+    if not os.path.isfile("./http/{}".format(test_img_file_name)):
         pytest.fail("file could not be downloaded to host machine")
 
     # Generate MD5 checksum to compare with the sent file
-    with open("~/{}".format(test_img_file_name)) as file:
+    with open("./http/{}".format(test_img_file_name)) as file:
         orig_checksum = hashlib.md5(file.read()).hexdigest()
 
     # Have DUT request file from http server
-    duthost.command("curl -O {}:{}/{}".format(CONTAINER_IP, HTTP_PORT, test_img_file_name))
+    duthost.command("curl -O {}:{}/http/{}".format(CONTAINER_IP, HTTP_PORT, test_img_file_name))
 
     # Validate file was received
     res = duthost.command("ls -ltr /home/admin/{}".format(test_img_file_name))["rc"]
@@ -76,10 +76,10 @@ def test_http_copy(duthosts, rand_one_dut_hostname, localhost):
         pytest.fail("DUT could not be cleaned.")
 
     # Delete file off host
-    os.system("sudo rm ~/{}".format(test_img_file_name))
+    os.system("sudo rm ./http/{}".format(test_img_file_name))
 
     # Ensure that file was removed correctly
-    if os.path.isfile("~/{}".format(test_img_file_name)):
+    if os.path.isfile("./http/{}".format(test_img_file_name)):
         pytest.fail("Host machine could not be cleaned")
 
     # Stop HTTP server
