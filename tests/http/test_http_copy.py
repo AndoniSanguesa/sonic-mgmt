@@ -68,7 +68,7 @@ def test_http_copy(duthosts, rand_one_dut_hostname, localhost):
         pytest.fail("Original file differs from file ssh'ed to the DUT and back.")
 
     # Perform cleanup on DUT
-    duthost.command("sudo rm /home/admin/{}".format(test_img_file_name))
+    duthost.command("sudo rm ./{}".format(test_img_file_name))
 
     # Confirm cleanup occured succesfuly
     res = duthost.command("ls -ltr ./{}".format(test_img_file_name), module_ignore_errors=True)["rc"]
