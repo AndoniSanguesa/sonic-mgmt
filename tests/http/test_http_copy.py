@@ -18,14 +18,18 @@ HTTP_PORT = "8080"
 
 def test_http_copy(duthosts, rand_one_dut_hostname, localhost):
     """Test that HTTP (copy) can be used to download objects to the DUT"""
-    
+
     duthost = duthosts[rand_one_dut_hostname]
 
     test_img = "sonic-build.azurewebsites.net/api/sonic/artifacts?branchName=master\&platform=vs\&target=target/sonic-vs.img.gz"
     test_img_file_name = "sonic-vs.img.gz"
 
+    orig_work_dir = os.getcwd()
+
+    os.chdir("{}/http/".format(orig_work_dir))
+
     # Start HTTP Server
-    pid = subprocess.Popen([sys.executable, "./http/start_http_server.py"])
+    pid = subprocess.Popen([sys.executable, "./start_http_server.py"])
 
     # Validate HTTP Server has started
     started = False
@@ -40,14 +44,14 @@ def test_http_copy(duthosts, rand_one_dut_hostname, localhost):
         pytest.fail("HTTP Server could not be started")
 
     # Download file via http into current dir
-    os.system("sudo wget {} -O ./http/{}".format(test_img, test_img_file_name))
+    os.system("sudo wget {} -O ./{}".format(test_img, test_img_file_name))
 
     # Ensure that file was downloaded
-    if os.path.isfile("./http/{}".format(test_img_file_name)):
+    if os.path.isfile("./{}".format(test_img_file_name)):
         pytest.fail("file could not be downloaded to host machine")
 
     # Generate MD5 checksum to compare with the sent file
-    with open("./http/{}".format(test_img_file_name)) as file:
+    with open("./{}".format(test_img_file_name)) as file:
         orig_checksum = hashlib.md5(file.read()).hexdigest()
 
     # Have DUT request file from http server
@@ -76,10 +80,10 @@ def test_http_copy(duthosts, rand_one_dut_hostname, localhost):
         pytest.fail("DUT could not be cleaned.")
 
     # Delete file off host
-    os.system("sudo rm ./http/{}".format(test_img_file_name))
+    os.system("sudo rm ./{}".format(test_img_file_name))
 
     # Ensure that file was removed correctly
-    if os.path.isfile("./http/{}".format(test_img_file_name)):
+    if os.path.isfile("./{}".format(test_img_file_name)):
         pytest.fail("Host machine could not be cleaned")
 
     # Stop HTTP server
@@ -96,3 +100,5 @@ def test_http_copy(duthosts, rand_one_dut_hostname, localhost):
 
     if started == True:
         pytest.fail("HTTP Server could not be stopped.")
+
+    os.chdir(orig_work_dir)
