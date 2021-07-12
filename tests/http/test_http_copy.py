@@ -43,7 +43,7 @@ def test_http_copy(duthosts, rand_one_dut_hostname, localhost):
     os.system("sudo wget {} -O ./http/{}".format(test_img, test_img_file_name))
 
     # Ensure that file was downloaded
-    if os.path.isfile("./http/{}".format(test_img_file_name)):
+    if not os.path.isfile("./http/{}".format(test_img_file_name)):
         pytest.fail("file could not be downloaded to host machine")
 
     # Generate MD5 checksum to compare with the sent file
