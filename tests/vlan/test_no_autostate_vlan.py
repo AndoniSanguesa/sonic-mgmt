@@ -14,14 +14,12 @@ def get_interface_status(duthost, interface_name):
     # Gets information on all interfaces
     output_lines = duthost.command("show interfaces status")["stdout_lines"]
 
-    # Removes leading and trailing whitespace from the output lines
-    output_lines = list(map(lambda line: line.strip(), output_lines))
-
     # Looks for the interface in the collected data
     interface_line = ""
 
     for line in output_lines:
-        if line.startswith(interface_name):
+        data = line.split()
+        if data[0] == interface_name:
             interface_line = line
     
     # If the interface is not configured, the test should fail
